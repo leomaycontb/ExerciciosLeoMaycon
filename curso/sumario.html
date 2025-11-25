@@ -1,34 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>Sumário</title>
-    <script type="text/javascript"> document.addEventListener('DOMContentLoaded', () => {{ const x = document.createElement('script'); x.src = `https://easydesk-portal.a5solutions.com/comercial/js/public-webchat.js?mid=6530dcb835f44741b08a8fbb28f5de9a`; document.head.appendChild(x); }}); </script>
+
+    <!-- Carregamento do script do seu chat -->
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            const x = document.createElement('script');
+            x.src = `https://easydesk-portal.a5solutions.com/comercial/js/public-webchat.js?mid=6530dcb835f44741b08a8fbb28f5de9a`;
+            document.head.appendChild(x);
+
+            // Classe Cliente
+            class Cliente {
+                constructor(id) {
+                    this.id = id;
+                }
+
+                iniciarConversa() {
+                    if (window.quickdeskwebchat && window.quickdeskwebchat.openWithID) {
+                        window.quickdeskwebchat.openWithID(this.id);
+                    } else {
+                        console.error("Método quickdeskwebchat.openWithID não encontrado.");
+                    }
+                }
+            }
+
+            // Criando um cliente de exemplo
+            window.clienteDemo = new Cliente("CLIENTE-1234");
+        });
+    </script>
 </head>
+
 <body>
     <h1>Sumário</h1>
 
     <ol>
-  <li>Capítulo 1
-    <ol>
-      <li><a href="./capitulo1/introducao.html"> Introdução </a></li>
-      <li><a href="./capitulo1/fundamentos.html"> Fundamentos </a></li>
-        <li>Exercicios
-    <ol>
-      <li><a href="./capitulo1/exercicios/ex1.html"> Exercicio 1 </a></li>
-      <li><a href="./capitulo1/exercicios/ex2.html"> Exercicio 2 </a></li>
-    </ol>
-  </li>
-    </ol>
-  </li>
-    <li>Capítulo 2
-    <ol>
-      <li><a href="./capitulo2/introducao.html"> Introdução </a></li>
-    </ol>
-  </li>
-</ol>
+        <li>Capítulo 1
+            <ol>
+                <li><a href="./Capítulo 1/Introdução.html"> Introdução </a></li>
+                <li><a href="./Capítulo 1/Fundamentos.html"> Fundamentos </a></li>
+                <li>Exercicios
+                    <ol>
+                        <li><a href="./Capítulo 1/Exercicios/Exercicio 1.html"> Exercicio 1 </a></li>
+                        <li><a href="./Capítulo 1/Exercicios/Exercício 2.html"> Exercicio 2 </a></li>
+                    </ol>
+                </li>
+            </ol>
+        </li>
 
-<a href="./home.html"> Voltar para a página inicial </a>
+        <li>Capítulo 2
+            <ol>
+                <li><a href="./Capítulo 2/Introdução.html"> Introdução </a></li>
+            </ol>
+        </li>
+    </ol>
+
+    <a href="./home.html"> Voltar para a página inicial </a>
+
+    <hr>
+
+    <!-- 🔘 Botão para iniciar conversa -->
+    <button onclick="clienteDemo.iniciarConversa()">Iniciar conversa com o cliente</button>
 
 </body>
 </html>
