@@ -1,67 +1,165 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="utf-8" />
-    <title>Sumário</title>
+  <meta charset="utf-8" />
+  <title>Sumário</title>
 
-    <!-- Carregamento do script do seu chat -->
-    <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', () => {
-            const x = document.createElement('script');
-            x.src = `https://easydesk-portal.a5solutions.com/comercial/js/public-webchat.js?mid=6530dcb835f44741b08a8fbb28f5de9a`;
-            document.head.appendChild(x);
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- Inserir o script do chat ---
+      const scriptUrl = 'https://easydesk-portal.a5solutions.com/comercial/js/public-webchat.js?mid=6530dcb835f44741b08a8fbb28f5de9a';
+      const x = document.createElement('script');
+      x.src = scriptUrl;
+      x.async = true;
+      document.head.appendChild(x);
 
-            // Classe Cliente
-            class Cliente {
-                constructor(id) {
-                    this.id = id;
-                }
+      // --- Gerenciamento de disponibilidade do quickdeskwebchat ---
+      window.quickdeskReady = false;
+      window.quickdeskReadyCallbacks = [];
 
-                iniciarConversa() {
-                    if (window.quickdeskwebchat && window.quickdeskwebchat.openWithID) {
-                        window.quickdeskwebchat.openWithID(this.id);
-                    } else {
-                        console.error("Método quickdeskwebchat.openWithID não encontrado.");
-                    }
-                }
+      function setReady() {
+        if (window.quickdeskReady) return;
+        if (window.quickdeskwebchat && typeof window.quickdeskwebchat.openWithID === 'function') {
+          window.quickdeskReady = true;
+          // habilita UI
+          const btn = document.getElementById('btnIniciarConversa');
+          if (btn) btn.disabled = false;
+          const status = document.getElementById('statusQuickdesk');
+          if (status) status.textContent = 'Quickdesk pronto ✅';
+          // executa callbacks enfileirados
+          window.quickdeskReadyCallbacks.forEach(cb => {
+            try { cb(); } catch (e) { console.error(e); }
+          });
+          window.quickdeskReadyCallbacks = [];
+        }
+      }
+
+      // onload do script: tenta marcar como pronto
+      x.onload = () => {
+        console.info('Script quickdesk carregado (onload). Verificando disponibilidade...');
+        // dá um pequeno atraso para o script inicializar completamente
+        setTimeout(setReady, 150);
+      };
+
+      // se o onerror ocorrer, mostra aviso
+      x.onerror = () => {
+        console.error('Falha ao carregar o script do quickdesk.');
+        const status = document.getElementById('statusQuickdesk');
+        if (status) status.textContent = 'Erro ao carregar Quickdesk ❌';
+      };
+
+      // fallback: polling breve caso onload não seja confiável
+      const pollInterval = setInterval(() => {
+        setReady();
+        if (window.quickdeskReady) clearInterval(pollInterval);
+      }, 200);
+
+      // Timeout: se após 8s não estiver pronto, avisar
+      setTimeout(() => {
+        if (!window.quickdeskReady) {
+          const status = document.getElementById('statusQuickdesk');
+          if (status) status.textContent = 'Quickdesk não disponível ainda (tente recarregar) ⚠️';
+          console.warn('quickdeskwebchat não ficou disponível dentro do tempo esperado.');
+        }
+      }, 8000);
+
+      // --- Classe Cliente ---
+      class Cliente {
+        constructor(id) {
+          this.id = id;
+        }
+
+        iniciarConversa() {
+          // Se o quickdesk ainda não estiver pronto, enfileira a ação
+          if (!window.quickdeskReady) {
+            console.log('Quickdesk não pronto — enfileirando a abertura da conversa...');
+            window.quickdeskReadyCallbacks.push(() => {
+              this._openIfPossible();
+            });
+            return;
+          }
+          this._openIfPossible();
+        }
+
+        _openIfPossible() {
+          if (window.quickdeskwebchat && typeof window.quickdeskwebchat.openWithID === 'function') {
+            try {
+              window.quickdeskwebchat.openWithID(this.id);
+              console.log(`Chamado quickdeskwebchat.openWithID(${this.id})`);
+            } catch (err) {
+              console.error('Erro ao chamar openWithID:', err);
+              alert('Ocorreu um erro ao abrir o chat. Veja o console para detalhes.');
             }
+          } else {
+            console.error('Método quickdeskwebchat.openWithID não encontrado.');
+            alert('O método do quickdesk não foi encontrado. Verifique se o script carregou corretamente.');
+          }
+        }
+      }
 
-            // Criando um cliente de exemplo
-            window.clienteDemo = new Cliente("CLIENTE-1234");
-        });
-    </script>
+      // disponibiliza a classe globalmente e cria instância demo (opcional)
+      window.Cliente = Cliente;
+      window.clienteDemo = new Cliente('CLIENTE-1234');
+
+      // garantir que botão comece desabilitado
+      const btn = document.getElementById('btnIniciarConversa');
+      if (btn) btn.disabled = true;
+    });
+  </script>
 </head>
 
 <body>
-    <h1>Sumário</h1>
+  <h1>Sumário</h1>
 
-    <ol>
-        <li>Capítulo 1
-            <ol>
-                <li><a href="./Capítulo 1/Introdução.html"> Introdução </a></li>
-                <li><a href="./Capítulo 1/Fundamentos.html"> Fundamentos </a></li>
-                <li>Exercicios
-                    <ol>
-                        <li><a href="./Capítulo 1/Exercicios/Exercicio 1.html"> Exercicio 1 </a></li>
-                        <li><a href="./Capítulo 1/Exercicios/Exercício 2.html"> Exercicio 2 </a></li>
-                    </ol>
-                </li>
-            </ol>
+  <ol>
+    <li>Capítulo 1
+      <ol>
+        <li><a href="./Capítulo 1/Introdução.html"> Introdução </a></li>
+        <li><a href="./Capítulo 1/Fundamentos.html"> Fundamentos </a></li>
+        <li>Exercicios
+          <ol>
+            <li><a href="./Capítulo 1/Exercicios/Exercicio 1.html"> Exercicio 1 </a></li>
+            <li><a href="./Capítulo 1/Exercicios/Exercício 2.html"> Exercicio 2 </a></li>
+          </ol>
         </li>
+      </ol>
+    </li>
+    <li>Capítulo 2
+      <ol>
+        <li><a href="./Capítulo 2/Introdução.html"> Introdução </a></li>
+      </ol>
+    </li>
+  </ol>
 
-        <li>Capítulo 2
-            <ol>
-                <li><a href="./Capítulo 2/Introdução.html"> Introdução </a></li>
-            </ol>
-        </li>
-    </ol>
+  <a href="./home.html"> Voltar para a página inicial </a>
 
-    <a href="./home.html"> Voltar para a página inicial </a>
+  <hr>
 
-    <hr>
+  <!-- UI de demonstração -->
+  <div style="margin-top:16px;">
+    <label for="inputClienteId">ID do cliente:</label>
+    <input id="inputClienteId" type="text" value="CLIENTE-1234" style="margin-right:8px;" />
+    <button id="btnIniciarConversa" disabled>Iniciar conversa com o cliente</button>
+    <span id="statusQuickdesk" style="margin-left:12px;">Carregando Quickdesk...</span>
+  </div>
 
-    <!-- 🔘 Botão para iniciar conversa -->
-    <button onclick="clienteDemo.iniciarConversa()">Iniciar conversa com o cliente</button>
+  <script>
+    // Lógica do botão: cria cliente a partir do input e chama iniciarConversa()
+    (function () {
+      const btn = document.getElementById('btnIniciarConversa');
+      const input = document.getElementById('inputClienteId');
 
+      btn.addEventListener('click', () => {
+        const id = (input.value || '').trim();
+        if (!id) {
+          alert('Informe um ID válido.');
+          return;
+        }
+        // usa a classe Cliente exposta globalmente
+        const c = new window.Cliente(id);
+        c.iniciarConversa();
+      });
+    })();
+  </script>
 </body>
 </html>
