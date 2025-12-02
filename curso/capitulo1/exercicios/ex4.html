@@ -17,7 +17,7 @@
             <input type="email" id="email" name="email" required autocomplete="email"><br><br>
 
             <label for="telefone">Telefone:</label><br>     
-            <input type="text" name="telefone" placeholder="(11) 91234-5678" pattern="\(\d{2}\)\ \d{5}-\d{4}"><br><br>
+            <input type="text" id="telefone"name="telefone" placeholder="(11) 91234-5678" pattern="\(\d{2}\)\ \d{5}-\d{4}"><br><br>
 
             <label for="senha">Senha de acesso:</label><br>
             <input type="password" id="senha" name="senha" required minlength="8" title="A senha deve ter 8+ caracteres, com pelo menos uma letra maiúscula, uma minúscula e um dígito." pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,    }" ><br><br>
@@ -35,10 +35,10 @@
             <input type="datetime-local" id="datahora" name="datahora" min="2025-12-01T08:00" max="2025-12-31T18:00" ><br><br>
 
             <label for="quantidadeitens">Quantidade de Itens:</label><br>     
-            <input type="range" name="quantidadeitens" min="1" max="10" value="5"><br><br>
+            <input type="range" id="quantidadeitens" name="quantidadeitens" min="1" max="10" value="5"><br><br>
 
             <label for="modeloproduto">Modelo do produto:</label><br>
-            <input type="text" id="senha" name="modeloproduto"  list="produtos" ><br><br>
+            <input type="text" id="modeloproduto" name="modeloproduto"  list="produtos" ><br><br>
 
             <datalist id="produtos">
                 <option value="Iphone 426 Pro Ultra Max Plus">
@@ -53,8 +53,8 @@
          <fieldset>
             <legend>Opções de Envio</legend>
             <label for="tipoenvio">Tipo de Envio:</label><br>     
-            <input type="radio" id="tipoenvio" name="tipoenvio" value="Envio normal"   checked>Envio normal<br>
-            <input type="radio" id="tipoenvio" name="tipoenvio" value="Envio Expresso"  >Envio Expresso<br><br>
+            <input type="radio" id="envionormal" name="envionormal" value="Envio normal"   checked>Envio normal<br>
+            <input type="radio" id="envioexpresso" name="envioexpresso" value="Envio Expresso"  >Envio Expresso<br><br>
 
             <label for="comentariosadicionais">Comentários Adicionais:</label><br>
             <textarea rows="10" cols="40" maxlength="300" minlength="10" name="comentariosadicionais" id="comentariosadicionais"  placeholder="Deixe aqui suas observações sobre o pedido."></textarea> <br
