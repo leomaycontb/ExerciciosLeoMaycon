@@ -1,1 +1,54 @@
+h1 {
+        color: white;
+		background-color: #808080;
+	}
+
+    nav {
+        float: left;
+        width: 170px;
+    }
+
+    ul {
+    list-style: none;        /* remove os bullets */
+    padding: 0;
+    margin: 0;
+    }
+
+    section {
+        padding-left: 10px;
+        margin-left: 200px;
+        border-left: 1px solid #000000;
+        border-width: 3px;
+        font-family: Segoe UI, 'Tahoma', Geneva, Verdana, sans-serif;
+    }
+    
+    li {
+        margin-bottom: 1px;     /* espaço entre botões */
+    }
+    
+    li a {
+        display: block;
+        width: 160px;
+        background-color: #808080;
+        color: rgb(0, 0, 0);
+        text-align: left;
+        padding: 10px;
+        text-decoration: none;
+        font-size: 18px;
+    }
+
+    li a:hover {
+        background-color: #ffffff;
+        color: red;
+        border-width: 1px;
+        border-color: black;
+        border-style: solid;
+        transition-property: color, background-color;
+        transition-duration: 1s;
+    }
+    footer {
+        clear: both;
+        color: white;
+        background-color: #808080;
+    }
 
